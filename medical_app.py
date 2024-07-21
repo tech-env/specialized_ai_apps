@@ -4,11 +4,11 @@ import streamlit as st
 from streamlit_chat import message
 
 # Setting page title and header
-st.set_page_config(page_title="Medical GPT", page_icon=":robot_face:")
-st.markdown("<h1 style='text-align: center;'>Medical GPT - Powered by Theta EdgeCloud AI</h1>", unsafe_allow_html=True)
+st.set_page_config(page_title="Medical GPT", page_icon=":medical_symbol:")
+st.markdown("<h3 style='text-align: center;'>Medical GPT - Powered by Theta EdgeCloud AI</h3>", unsafe_allow_html=True)
 
-# Set API key
-genai.configure(api_key=st.secrets["gemini_api_key"])
+# Set org ID and API key
+genai.configure(api_key=st.secrets["api_key"])
 ai_model = genai.GenerativeModel('gemini-1.5-flash') # this is sample model, to be replaced by Theta EdgeCloud based inferences
 
 # Initialise session state variables
@@ -31,7 +31,7 @@ if 'total_cost' not in st.session_state:
 
 # Sidebar - let user choose model, show total cost of current conversation, and let user clear the current conversation
 st.sidebar.title("Available AI Models")
-model_name = st.sidebar.radio("Choose a model:", ("Theta MediTech Infection 1.0", "Theta MediTech - Cancer 1.0"))
+model_name = st.sidebar.radio("Choose a model:", ("Theta MediTech - Infection 1.0", "Theta MediTech - Cancer 1.0"))
 counter_placeholder = st.sidebar.empty()
 counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
 clear_button = st.sidebar.button("Clear Conversation", key="clear")
@@ -40,14 +40,14 @@ clear_button = st.sidebar.button("Clear Conversation", key="clear")
 if model_name == "Theta MediTech - Cancer 1.0":
     model = "Theta MediTech - Cancer 1.0"
 else:
-    model = "Theta MediTech Infection 1.0"
+    model = "Theta MediTech - Infection 1.0"
 
 # reset everything
 if clear_button:
     st.session_state['generated'] = []
     st.session_state['past'] = []
     st.session_state['messages'] = [
-        {"role": "system", "content": "You are a helpful medical assistant."}
+        {"role": "system", "content": "You are a helpful medical assistant, who have good knowledge of biology, medicines, diseases and their cures"}
     ]
     st.session_state['number_tokens'] = []
     st.session_state['model_name'] = []
